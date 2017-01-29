@@ -10,19 +10,19 @@
 import sys
 import difflib
 from optparse import OptionParser
-from difflib import SequenceMatcher 
+from difflib import SequenceMatcher
 from data_gc_ca_api.cityweather import  City, CityIndex
 from data_gc_ca_api.__version__ import version
 
 
 def get_best_guess(city, cityList):
-    # Find the closest matching city including the case where the  
-    # input city matches a complete sub string. For example the case where 
+    # Find the closest matching city including the case where the
+    # input city matches a complete sub string. For example the case where
     # someone uses "Ottawa" but environment Canada uses the name
-    # "Ottawa (Richmond - Metcalfe)" we want to guess the long string 
+    # "Ottawa (Richmond - Metcalfe)" we want to guess the long string
     # rather than the close string Oshawa
 
-     
+
     s = SequenceMatcher()
     s.set_seq1(city)
     cityLength = len(city)
@@ -81,12 +81,12 @@ def main():
         sys.exit(1)
     if options.list:
         for cityname in cityindex.english_city_list():
-            print cityname
+            print(cityname)
         sys.exit(1)
 
 
     if not options.city:
-        print "No City given, using, Victoria, BC (the best city)."
+        print("No City given, using, Victoria, BC (the best city).")
     else:
         city = options.city
 
@@ -103,18 +103,18 @@ def main():
         cityObject = City(cityindex.data_url(city))
         if options.list_quantities:
             for q in cityObject.get_available_quantities():
-                print q
+                print(q)
         else:
             if not options.quantity:
-                print "No requested quantity given, using temperature"
-            print quantity + " is: " + cityObject.get_quantity(quantity)
+                print("No requested quantity given, using temperature")
+            print(quantity + " is: " + cityObject.get_quantity(quantity))
     else:
-        print city + " is not available"
+        print(city + " is not available")
         bestGuess = get_best_guess(city,cityindex.english_city_list())
         if bestGuess:
-           print "Did you mean: " + bestGuess
+           print("Did you mean: " + bestGuess)
         else:
-           print "Do 'weatherca --list' to get a list of cities"
+           print("Do 'weatherca --list' to get a list of cities")
 
 
 if __name__ == "__main__":
