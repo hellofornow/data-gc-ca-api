@@ -1,4 +1,4 @@
-# data-gc-ca-api 1.0.0 README
+# data-gc-ca-api 1.1.0 README
 [![Build Status](https://travis-ci.org/igable/data-gc-ca-api.svg?branch=master)](https://travis-ci.org/igable/data-gc-ca-api)
 
 ## Introduction
@@ -19,7 +19,7 @@ XML](http://goo.gl/vyL7r).
 ## Installation
 
 This package is available from the [Python Package Index](http://pypi.python.org). It
-can be easily installed using pip as follows
+can be easily installed using pip as follows. Python 3 required.
  
     $ pip install data-gc-ca-api
 

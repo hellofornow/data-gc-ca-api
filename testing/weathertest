@@ -12,20 +12,19 @@
 
 import sys
 import difflib
-from difflib import SequenceMatcher 
+from difflib import SequenceMatcher
 from data_gc_ca_api.cityweather import  City, CityIndex
 from data_gc_ca_api.__version__ import version
 from optparse import OptionParser
-from xml.etree.ElementTree import ElementTree
 
 def get_best_guess(city, cityList):
-    # Find the closest matching city including the case where the  
-    # input city matches a complete sub string. For example the case where 
+    # Find the closest matching city including the case where the
+    # input city matches a complete sub string. For example the case where
     # someone uses "Ottawa" but environment Canada uses the name
-    # "Ottawa (Richmond - Metcalfe)" we want to guess the long string 
+    # "Ottawa (Richmond - Metcalfe)" we want to guess the long string
     # rather than the close string Oshawa
 
-     
+
     s = SequenceMatcher()
     s.set_seq1(city)
     cityLength = len(city)
@@ -48,16 +47,14 @@ def get_best_guess(city, cityList):
 
 
 def main():
-
-
     parser = OptionParser(usage="%prog -c CITY -q QUANTITY", version = "%prog " + version)
 
     parser.add_option("-c", "--city", dest="city",
-                                            help="The City you want information about", metavar="CITY")
+                      help="The City you want information about", metavar="CITY")
     parser.add_option("-q", "--quantity", dest="quantity",
-                                            help="the particular quatity toy want to know", metavar="QUANTITY")
+                      help="the particular quatity toy want to know", metavar="QUANTITY")
     parser.add_option("-l", "--list", action="store_true", dest="list",
-                                            help="Show a list of the available cities")
+                      help="Show a list of the available cities")
     (options, args) = parser.parse_args()
     (options, args) = parser.parse_args()
 
@@ -72,12 +69,12 @@ def main():
         sys.exit(1)
     if options.list:
         for cityname in cityindex.english_city_list():
-            print cityname
+            print(cityname)
         sys.exit(1)
 
 
     if not options.city:
-        print "No City given, using, Victoria, BC (the best city)."
+        print("No City given, using, Victoria, BC (the best city).")
     else:
         city = options.city
 
@@ -85,35 +82,33 @@ def main():
     if options.quantity:
         quantity = options.quantity
 
-
-
     if cityindex.is_city(city):
         cityObject = City(cityindex.data_url(city))
         if not options.quantity:
-            print "No requested quantity given, using temperature"
-            print quantity + " is: " + cityObject.get_quantity(quantity)
+            print("No requested quantity given, using temperature")
+            print(quantity + " is: " + cityObject.get_quantity(quantity))
     else:
-        print city + " is not available"
+        print(city + " is not available")
         bestGuess = get_best_guess(city,cityindex.english_city_list())
         if bestGuess:
-           print "Did you mean: " + bestGuess
+            print("Did you mean: " + bestGuess)
         else:
-           print "Do 'weatherca --list' to get a list of cities"
+            print("Do 'weatherca --list' to get a list of cities")
 
 
     # the following prints out all the available xpaths for testing purposes
     for xpath in cityObject.get_available_quantities():
-#        attributelist = ""
-#        if isinstance(xpath['attrib'],dict):
-#            for attribute,value in xpath['attrib'].iteritems():
-#                attributelist = attributelist + " " + attribute + ":" + value
-#                #print attribute
-#        if attributelist:
-#            print xpath['path'] + " " + attributelist
-#        else:
-#            print xpath['path']
-#        #print xpath[0] 
-        print xpath
+        #        attributelist = ""
+        #        if isinstance(xpath['attrib'],dict):
+        #            for attribute,value in xpath['attrib'].iteritems():
+        #                attributelist = attributelist + " " + attribute + ":" + value
+        #                #print attribute
+        #        if attributelist:
+        #            print xpath['path'] + " " + attributelist
+        #        else:
+        #            print xpath['path']
+        #        #print xpath[0]
+        print(xpath)
 
 
 #    for forecastname in cityObject.getAvailableForecastNames():
